@@ -41,3 +41,31 @@ Perbedaan utamanya terletak pada "state" atau data internal. `StatelessWidget` a
 `Hot reload` adalah fitur yang menyuntikkan file kode yang baru diubah ke dalam Dart Virtual Machine (VM) yang sedang berjalan, lalu hanya membangun ulang widget tree, sehingga perubahan UI terlihat instan tanpa kehilangan state aplikasi (tetap di halaman yang sama, data formulir tidak hilang). Sedangkan `hot restart` mematikan Dart VM yang sedang berjalan dan memulai yang baru, yang berarti seluruh state aplikasi akan hilang (reset) dan aplikasi akan dimulai ulang dari awal (halaman `home`).
 
 ---
+
+# Tugas 8
+
+---
+
+## "Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Slime Shop kamu?"
+
+Perbedaan utamanya terletak pada cara mereka mengelola "tumpukan" halaman navigasi. `Navigator.push()` **menambahkan** halaman baru di atas halaman saat ini, sehingga pengguna bisa kembali ke halaman sebelumnya (biasanya memunculkan tombol "kembali" di `AppBar`). Sebaliknya, `Navigator.pushReplacement()` **mengganti** halaman saat ini dengan halaman baru, halaman lama dihapus dari tumpukan, sehingga pengguna tidak bisa kembali ke halaman tersebut. Dalam aplikasi Slime Shop, kita menggunakan `Navigator.push()` (melalui `pushNamed`) saat menekan tombol "Create Product" atau menu "Tambah Produk" di `Drawer`, agar pengguna bisa kembali ke halaman utama. Kita menggunakan `Navigator.pushReplacement()` (melalui `pushReplacementNamed`) saat memilih "Halaman Utama" dari `Drawer`, untuk memastikan halaman utama menggantikan halaman apa pun yang sedang aktif (seperti halaman form) tanpa menumpuknya.
+
+---
+
+## "Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?"
+
+Hierarki ini dimanfaatkan untuk menciptakan tata letak visual yang standar dan konsisten. `Scaffold` bertindak sebagai kerangka dasar untuk setiap halaman, menyediakan properti standar seperti `appBar` dan `drawer`. Dengan menempatkan `AppBar` di dalam `Scaffold`, kita memastikan *bar* judul selalu berada di bagian atas halaman. Demikian pula, dengan menyediakan widget `LeftDrawer` ke properti `drawer` pada `Scaffold` di beberapa halaman (seperti di `HomePage` dan `ShopFormPage`), kita membuat menu navigasi samping yang konsisten dapat diakses dari mana saja. Penggunaan hierarki ini menghemat kode dan membiasakan pengguna dengan struktur aplikasi kita, di mana pun mereka berada.
+
+---
+
+## "Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu."
+
+Kelebihan utamanya adalah untuk mengelola ruang dan *scrolling* agar formulir tetap fungsional di berbagai ukuran layar. Di aplikasi kita, `ShopFormPage` menggunakan `SingleChildScrollView` untuk membungkus `Form` yang berisi banyak `TextFormField`. Ini sangat penting karena ketika *keyboard* virtual muncul dan ruang layar berkurang, pengguna tetap dapat *scroll* ke bawah untuk mengakses *field* di bagian bawah atau tombol "Save". Kita juga menggunakan `Padding` di sekeliling `SingleChildScrollView` untuk memberi "napas" visual, sehingga elemen formulir tidak menempel di tepi layar. `ListView` juga bisa digunakan untuk fungsi *scrolling*, dan sangat efisien jika elemen formulir kita sangat banyak atau dinamis, karena ia me-*render* elemen hanya saat akan tampil di layar.
+
+---
+
+## "Bagaimana kamu menyesuaikan warna tema agar aplikasi Slime Shop memiliki identitas visual yang konsisten dengan brand toko?"
+
+Untuk menyesuaikan warna tema, kita memodifikasi properti `theme` pada widget `MaterialApp` di file `main.dart`. Properti ini menerima sebuah `ThemeData` di mana kita dapat mengatur `primarySwatch` (seperti `Colors.blue` yang kita gunakan) atau `colorScheme` yang lebih modern untuk kontrol yang lebih detail. Setelah diatur di sana, semua widget Material Design di dalam aplikasi, seperti `AppBar`, `ElevatedButton`, dan `DrawerHeader`, secara otomatis akan mengadopsi skema warna ini. Ini memastikan identitas visual *brand* "Slime Shop" (misalnya warna biru) diterapkan secara konsisten di seluruh aplikasi tanpa harus mengatur warna pada setiap widget satu per satu.
+
+---
