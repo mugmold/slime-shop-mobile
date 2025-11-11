@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:slime_shop/menu.dart';
+import 'package:slime_shop/screens/home_page.dart';
+import 'package:slime_shop/screens/shop_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,19 +18,12 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
-    );
-  }
-}
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Slime Shop")),
-      body: MenuButtons(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/add-product': (context) => const ShopFormPage(),
+      },
     );
   }
 }

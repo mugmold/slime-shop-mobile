@@ -58,10 +58,8 @@ class MenuButtons extends StatelessWidget {
               minimumSize: Size(200, 50),
             ),
             onPressed: () {
-              showMySnackbar(
-                context,
-                "Kamu telah menekan tombol Create Product",
-              );
+              // navigasi ke halaman form pake named route
+              Navigator.pushNamed(context, '/add-product');
             },
           ),
         ],
