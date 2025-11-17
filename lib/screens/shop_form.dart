@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:slime_shop/models/product.dart';
 
 class ShopFormPage extends StatefulWidget {
-  const ShopFormPage({super.key});
+  final Product? product;
+
+  const ShopFormPage({super.key, this.product});
 
   @override
   State<ShopFormPage> createState() => _ShopFormPageState();
@@ -22,6 +28,8 @@ class _ShopFormPageState extends State<ShopFormPage> {
   // variabel buat nyimpen state Switch (isFeatured)
   bool _isFeatured = false;
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     // dispose controller setelah tidak digunakan (atasi memory leaks)
@@ -34,44 +42,29 @@ class _ShopFormPageState extends State<ShopFormPage> {
     super.dispose();
   }
 
-  void _showDataDialog(Map<String, dynamic> data) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Data Produk Tersimpan"),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("Nama: ${data['name']}"),
-                Text("Harga: ${data['price']}"),
-                Text("Stock: ${data['stock']}"),
-                Text("Deskripsi: ${data['description']}"),
-                Text("Kategori: ${data['category']}"),
-                Text("URL Thumbnail: ${data['thumbnail']}"),
-                Text("Is Featured: ${data['isFeatured']}"),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.product != null) {
+      _nameController.text = widget.product!.fields.name;
+      _priceController.text = widget.product!.fields.price.toString();
+      _stockController.text = widget.product!.fields.stock.toString();
+      _descriptionController.text = widget.product!.fields.description;
+      _categoryController.text = widget.product!.fields.category;
+      _thumbnailController.text = widget.product!.fields.thumbnail ?? "";
+      _isFeatured = widget.product!.fields.isFeatured;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Tambah Produk Baru')),
+      appBar: AppBar(
+        title: Text(widget.product == null ? 'Create Product' : 'Edit Product'),
+      ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -216,36 +209,82 @@ class _ShopFormPageState extends State<ShopFormPage> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  onPressed: () {
-                    // cek apakah form sudah valid
-                    if (_formKey.currentState!.validate()) {
-                      // tangkep data dlu biar ga ke update tiba tiba pas di show
-                      final Map<String, dynamic> data = {
-                        'name': _nameController.text,
-                        'price': _priceController.text,
-                        'stock': _stockController.text,
-                        'description': _descriptionController.text,
-                        'category': _categoryController.text,
-                        'thumbnail': _thumbnailController.text,
-                        'isFeatured': _isFeatured,
-                      };
+                  onPressed:
+                      _isLoading
+                          ? null
+                          : () async {
+                            if (_formKey.currentState!.validate()) {
+                              String url;
+                              if (widget.product == null) {
+                                url =
+                                    "https://bermulya-anugrah-slimeshop.pbp.cs.ui.ac.id/create-product-flutter/";
+                              } else {
+                                url =
+                                    "https://bermulya-anugrah-slimeshop.pbp.cs.ui.ac.id/edit-product-flutter/${widget.product!.pk}/";
+                              }
 
-                      // jika valid, tampilkan dialog
-                      _showDataDialog(data);
+                              setState(() {
+                                _isLoading = true;
+                              });
 
-                      // reset form
-                      _formKey.currentState!.reset();
-                      _nameController.clear();
-                      _priceController.clear();
-                      _descriptionController.clear();
-                      _thumbnailController.clear();
-                      _categoryController.clear();
-                      setState(() {
-                        _isFeatured = false;
-                      });
-                    }
-                  },
-                  child: const Text("Save", style: TextStyle(fontSize: 18)),
+                              try {
+                                final response = await request.postJson(
+                                  url,
+                                  jsonEncode(<String, dynamic>{
+                                    'name': _nameController.text,
+                                    'price': int.parse(_priceController.text),
+                                    'stock': int.parse(_stockController.text),
+                                    'description': _descriptionController.text,
+                                    'category': _categoryController.text,
+                                    'thumbnail': _thumbnailController.text,
+                                    'is_featured': _isFeatured,
+                                  }),
+                                );
+
+                                if (context.mounted) {
+                                  if (response['status'] == 'success') {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Produk berhasil disimpan!",
+                                        ),
+                                      ),
+                                    );
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      '/',
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Terdapat kesalahan, silakan coba lagi.",
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                }
+                              } catch (e) {
+                                // heh
+                              } finally {
+                                if (mounted) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }
+                              }
+                            }
+                          },
+                  child:
+                      _isLoading
+                          ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                          : const Text("Save", style: TextStyle(fontSize: 18)),
                 ),
               ),
             ],
