@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:slime_shop/models/product.dart';
+import 'package:slime_shop/widgets/left_drawer.dart';
 
 class ShopFormPage extends StatefulWidget {
   final Product? product;
@@ -65,6 +66,7 @@ class _ShopFormPageState extends State<ShopFormPage> {
       appBar: AppBar(
         title: Text(widget.product == null ? 'Create Product' : 'Edit Product'),
       ),
+      drawer: const LeftDrawer(),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(

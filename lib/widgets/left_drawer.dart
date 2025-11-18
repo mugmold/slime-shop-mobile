@@ -53,7 +53,7 @@ class LeftDrawer extends StatelessWidget {
             leading: const Icon(Icons.add_shopping_cart),
             title: const Text('Tambah Produk'),
             onTap: () {
-              Navigator.pushNamed(context, '/add-product');
+              Navigator.pushReplacementNamed(context, '/add-product');
             },
           ),
           // opsi Daftar Produk
@@ -61,7 +61,7 @@ class LeftDrawer extends StatelessWidget {
             leading: const Icon(Icons.shopping_bag),
             title: const Text('Daftar Produk'),
             onTap: () {
-              Navigator.pushNamed(context, '/list-product');
+              Navigator.pushReplacementNamed(context, '/list-product');
             },
           ),
           // opsi Logout

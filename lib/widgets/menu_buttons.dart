@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class MenuButtons extends StatelessWidget {
@@ -6,52 +8,95 @@ class MenuButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton.icon(
-            icon: const Icon(Icons.shopping_bag_outlined),
-            label: const Text("All Products"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(200, 50),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MenuCard(
+              title: "All Products",
+              icon: Icons.shopping_bag_outlined,
+              color: const Color(0xFF10B981),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/list-product');
+              },
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/list-product');
-            },
-          ),
 
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          ElevatedButton.icon(
-            icon: const Icon(Icons.person_pin_outlined),
-            label: const Text("My Products"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(200, 50),
+            MenuCard(
+              title: "My Products",
+              icon: Icons.person_pin_outlined,
+              color: const Color(0xFF10B981),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/list-product-user');
+              },
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/list-product-user');
-            },
-          ),
 
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          ElevatedButton.icon(
-            icon: const Icon(Icons.add_circle_outline),
-            label: const Text("Create Product"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(200, 50),
+            MenuCard(
+              title: "Create Product",
+              icon: Icons.add_circle_outline,
+              color: const Color(0xFF10B981),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/add-product');
+              },
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/add-product');
-            },
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MenuCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const MenuCard({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          splashColor: Colors.white.withOpacity(0.3),
+          highlightColor: Colors.white.withOpacity(0.1),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: Colors.white, size: 40.0),
+                const SizedBox(height: 10),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

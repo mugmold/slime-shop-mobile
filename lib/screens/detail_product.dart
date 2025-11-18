@@ -57,12 +57,12 @@ class DetailProductPage extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.blue[100],
+                      color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
                       product.fields.category,
-                      style: TextStyle(color: Colors.blue[800]),
+                      style: TextStyle(color: Colors.grey[800]),
                     ),
                   ),
                   const SizedBox(height: 16),
