@@ -17,6 +17,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = ColorScheme.fromSeed(
+      seedColor: const Color(0xFF10B981),
+      primary: const Color(0xFF10B981),
+      secondary: const Color(0xFF059669),
+      surface: const Color(0xFFF8FAFC),
+    );
+
     return MultiProvider(
       providers: [
         Provider(
@@ -29,7 +36,62 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Slime Shop',
-        theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: colorScheme,
+          scaffoldBackgroundColor: const Color(0xFFF1F5F9),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: Color(0xFF1F2937),
+            elevation: 0,
+            surfaceTintColor: Colors.white,
+            centerTitle: true,
+            iconTheme: IconThemeData(color: Color(0xFF1F2937)),
+            titleTextStyle: TextStyle(
+              color: Color(0xFF1F2937),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          cardTheme: CardTheme(
+            color: Colors.white,
+            surfaceTintColor: Colors.white,
+            elevation: 2,
+            // ignore: deprecated_member_use
+            shadowColor: Colors.black.withOpacity(0.2),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF10B981),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              borderSide: const BorderSide(color: Color(0xFFCBD5E1)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              borderSide: const BorderSide(color: Color(0xFFCBD5E1)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+              borderSide: const BorderSide(
+                color: Color(0xFF10B981),
+                width: 2.0,
+              ),
+            ),
+          ),
+        ),
         debugShowCheckedModeBanner: false,
         initialRoute: '/login',
         routes: {

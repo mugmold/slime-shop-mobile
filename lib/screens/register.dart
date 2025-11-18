@@ -64,6 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Password tidak cocok!"),
+                              backgroundColor: Color.fromARGB(255, 197, 47, 47),
                             ),
                           );
                           return;
@@ -89,6 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   content: Text(
                                     "Registrasi berhasil! Silakan login.",
                                   ),
+                                  backgroundColor: Color(0xFF10B981),
                                 ),
                               );
                               Navigator.pushReplacementNamed(context, '/login');
@@ -98,6 +100,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                   content: Text(
                                     response['message'] ?? "Registrasi gagal.",
                                   ),
+                                  backgroundColor: Color.fromARGB(
+                                    255,
+                                    197,
+                                    47,
+                                    47,
+                                  ),
                                 ),
                               );
                             }
@@ -105,7 +113,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         } catch (e) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
+                              SnackBar(
+                                content: Text("Error: $e"),
+                                backgroundColor: Color.fromARGB(
+                                  255,
+                                  197,
+                                  47,
+                                  47,
+                                ),
+                              ),
                             );
                           }
                         } finally {

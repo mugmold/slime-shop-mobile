@@ -248,6 +248,7 @@ class _ShopFormPageState extends State<ShopFormPage> {
                                         content: Text(
                                           "Produk berhasil disimpan!",
                                         ),
+                                        backgroundColor: Color(0xFF10B981),
                                       ),
                                     );
                                     Navigator.pushReplacementNamed(
@@ -259,6 +260,12 @@ class _ShopFormPageState extends State<ShopFormPage> {
                                       const SnackBar(
                                         content: Text(
                                           "Terdapat kesalahan, silakan coba lagi.",
+                                        ),
+                                        backgroundColor: Color.fromARGB(
+                                          255,
+                                          197,
+                                          47,
+                                          47,
                                         ),
                                       ),
                                     );

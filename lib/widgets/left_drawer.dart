@@ -10,17 +10,19 @@ class LeftDrawer extends StatelessWidget {
     final request = context.watch<CookieRequest>();
 
     return Drawer(
+      backgroundColor: Colors.white,
       child: ListView(
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+            decoration: BoxDecoration(color: Color(0xFF10B981)),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Slime Shop',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -32,7 +34,7 @@ class LeftDrawer extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
-                    fontStyle: FontStyle.italic,
+                    fontStyle: FontStyle.normal,
                   ),
                 ),
               ],
@@ -74,13 +76,19 @@ class LeftDrawer extends StatelessWidget {
               if (context.mounted) {
                 if (response['status']) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("$message Sampai jumpa!")),
+                    SnackBar(
+                      content: Text("$message Sampai jumpa!"),
+                      backgroundColor: const Color(0xFF10B981),
+                    ),
                   );
                   Navigator.pushReplacementNamed(context, '/login');
                 } else {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(message)));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      backgroundColor: Color.fromARGB(255, 197, 47, 47),
+                    ),
+                  );
                 }
               }
             },
